@@ -29,7 +29,8 @@ __global__ void gpu_add(Shared *s) {
 
     while (atomicAdd_system(&s->stop, 0) == 0) {
         for (int i = 0; i < 256; ++i)
-            atomicAdd_system(&s->counter, 1ULL);
+            s->counter++;
+            // atomicAdd_system(&s->counter, 1ULL);
         atomicAdd_system(&s->gpu_ops, 256ULL);
     }
 }
@@ -69,7 +70,8 @@ int main() {
             while (__atomic_load_n(&host->start, __ATOMIC_ACQUIRE) == 0) { }
             while (__atomic_load_n(&host->stop, __ATOMIC_ACQUIRE) == 0) {
                 for (int i = 0; i < 256; ++i)
-                    __atomic_fetch_add(&host->counter, 1ULL, __ATOMIC_RELAXED);
+                    // __atomic_fetch_add(&host->counter, 1ULL, __ATOMIC_RELAXED);
+                    host->counter++;
                 __atomic_fetch_add(&host->cpu_ops, 256ULL, __ATOMIC_RELAXED);
             }
         });

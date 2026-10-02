@@ -1,7 +1,7 @@
 NVCC ?= /usr/local/cuda-11.4/bin/nvcc
 CC ?= cc
 
-all: ordering_cpu_to_gpu ordering_gpu_to_cpu
+all: ordering_cpu_to_gpu ordering_gpu_to_cpu atomic_test
 
 atomic_test_no_nvcc: atomic_test_no_nvcc.c
 	$(CC) -O2 -std=c11 -Wall -Wextra $< -ldl -o $@

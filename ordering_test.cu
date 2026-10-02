@@ -56,7 +56,7 @@ __global__ void gpu_work(Shared *s) {
             bad += a < b;
 #else
             p->a++;
-            // __threadfence_system();
+            __threadfence_system();
             p->b++;
 #endif
         }
