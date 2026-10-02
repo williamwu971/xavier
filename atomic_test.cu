@@ -70,8 +70,8 @@ int main() {
             while (__atomic_load_n(&host->start, __ATOMIC_ACQUIRE) == 0) { }
             while (__atomic_load_n(&host->stop, __ATOMIC_ACQUIRE) == 0) {
                 for (int i = 0; i < 256; ++i)
-                    // __atomic_fetch_add(&host->counter, 1ULL, __ATOMIC_RELAXED);
-                    host->counter++;
+                    __atomic_fetch_add(&host->counter, 1ULL, __ATOMIC_RELAXED);
+                    // host->counter++;
                 __atomic_fetch_add(&host->cpu_ops, 256ULL, __ATOMIC_RELAXED);
             }
         });
