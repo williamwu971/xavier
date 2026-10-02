@@ -56,7 +56,7 @@ __global__ void gpu_work(Shared *s) {
             bad += a < b;
 #else
             p->a++;
-            __threadfence_system();
+            // __threadfence_system();
             p->b++;
 #endif
         }
@@ -128,7 +128,7 @@ int main() {
                 for (int i = 0; i < 64; ++i) {
 #ifdef CPU_TO_GPU
                     p->a++;
-                    // __sync_synchronize();
+                    __sync_synchronize();
                     p->b++;
 #else
                     const unsigned int b = p->b;
