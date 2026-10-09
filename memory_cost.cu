@@ -262,10 +262,13 @@ int main(int argc, char **argv) {
 #ifndef CPU_PRIVATE_ONLY
                 Word *device = nullptr;
                 if (shared) {
-                    // EXACT same allocation API and flags as atomic/ordering tests.
-                    CUDA(cudaHostAlloc(reinterpret_cast<void **>(&host), bytes,
-                                       cudaHostAllocMapped));
-                    CUDA(cudaHostGetDevicePointer(reinterpret_cast<void **>(&device), host, 0));
+                    // Original mapped allocation, retained for comparison:
+                    // CUDA(cudaHostAlloc(reinterpret_cast<void **>(&host), bytes,
+                    //                    cudaHostAllocMapped));
+                    // CUDA(cudaHostGetDevicePointer(reinterpret_cast<void **>(&device), host, 0));
+                    // The shared case now uses unified managed memory.
+                    CUDA(cudaMallocManaged(reinterpret_cast<void **>(&host), bytes));
+                    device = host;
                 } else if (side == 1) {
                     CUDA(cudaMalloc(reinterpret_cast<void **>(&device), bytes));
                 } else
@@ -300,7 +303,7 @@ int main(int argc, char **argv) {
                             result.gpu_seconds ? result.ops / result.gpu_seconds / 1e6 : 0);
                 std::fflush(stdout);
 #ifndef CPU_PRIVATE_ONLY
-                if (shared) CUDA(cudaFreeHost(host));
+                if (shared) CUDA(cudaFree(host));
                 else if (side == 1) CUDA(cudaFree(device));
                 else
 #endif
