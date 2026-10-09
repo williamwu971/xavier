@@ -11,6 +11,13 @@ The Makefile uses `/usr/local/cuda-11.4/bin/nvcc`; override with
 `make NVCC=/another/path/nvcc` if needed. The earlier atomicity tests remain
 available as `make run` and `make run-no-nvcc`.
 
+## Shared/private throughput
+
+`make memory_cost` builds the additional allocation-policy benchmark.
+`make run-memory-sweep` compares CPU-only and GPU-only updates to shared and
+private buffers with 64 KiB and 64 MiB working sets, 10 seconds per case.
+See [MEMORY_COST.md](MEMORY_COST.md) for commands, timing and interpretation.
+
 ## CPU/GPU ordering
 
 ```sh
